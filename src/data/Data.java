@@ -1,7 +1,9 @@
 package data;
 
 public class Data {
-	private static final int SIZE_DAYS=30;
+	private static final int SIZE_DAYS=31;
+	public static final String ACCOMMODATION_TYPE="reserva";
+	public static final String LEISURE_TYPE="ocio";
 	public static String[] getCities() {
 		String cities[]= {"Madrid","Plasencia","Vigo"};
 		return cities;

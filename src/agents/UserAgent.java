@@ -6,10 +6,14 @@ import java.awt.event.WindowEvent;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import jade.core.Agent;
 import swing.Frame;
 import swing.FrameChooseTrip;
+import swing.FrameLeisure;
+import swing.FrameWaitTripResponse;
 
 public class UserAgent extends Agent{
 	
@@ -34,6 +38,8 @@ public class UserAgent extends Agent{
 						}else {
 							System.out.println("Datos correctos\nCiudad:"+chooseTrip.getCity()+"\nFecha Inicio: ");
 						}
+						//Pasos: 1.enviamos mensaje, 2.Esperamos respues, 3.Imprimimos
+						
 					}
 				});
 				
@@ -53,7 +59,23 @@ public class UserAgent extends Agent{
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				// TODO Auto-generated method stub
-				
+				FrameLeisure frameLeisure = new FrameLeisure();
+				frameLeisure.getBtnAceptar().addActionListener(new ActionListener() {
+					
+					@Override
+					public void actionPerformed(ActionEvent arg0) {
+						// TODO Auto-generated method stub
+						
+					}
+				});
+				frameLeisure.getBtnCancelar().addActionListener(new ActionListener() {
+					
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						// TODO Auto-generated method stub
+						frameLeisure.dispatchEvent(new WindowEvent(frameLeisure, WindowEvent.WINDOW_CLOSING));
+					}
+				});
 			}
 		});
 	}
