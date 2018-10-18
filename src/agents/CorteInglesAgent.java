@@ -18,10 +18,15 @@ public class CorteInglesAgent extends Agent{
 
 		ServiceDescription sd=new ServiceDescription();
 		sd.setName("Reservar");
-		sd.setType(Data.ACCOMMODATION_TYPE);
+		sd.setType(Data.ACCOMMODATION_TYPE_CORTE_INGLES);
 		sd.addOntologies(Data.ONTOLOGY);
-		sd.addLanguages(new SLCodec().getName());
+		sd.addLanguages(new SLCodec().getName());	
 		dfd.addServices(sd);
+		//sd.setName("Ocio");
+		//sd.setType(Data.LEISURE_TYPE);
+		//sd.addOntologies(Data.ONTOLOGY);
+		//sd.addLanguages(new SLCodec().getName());	
+		//dfd.addServices(sd);
 		try 
 		{
 			DFService.register(this, dfd);

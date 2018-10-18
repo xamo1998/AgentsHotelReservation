@@ -1,6 +1,8 @@
 package data;
 
-public class Hotel {
+import jade.util.leap.Serializable;
+
+public class Hotel implements Serializable{
 	private String name;
 	private int rooms, calendar[];
 	public Hotel(String name, int rooms, int[] calendar) {

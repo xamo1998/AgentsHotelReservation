@@ -26,7 +26,7 @@ public class FrameLeisure extends JFrame{
 		
 		cityComboBox = new JComboBox();
 		cityComboBox.setBounds(147, 21, 137, 20);
-		cityComboBox.setModel(new DefaultComboBoxModel(Data.getCities()));
+		cityComboBox.setModel(new DefaultComboBoxModel(Data.getDefaultCities()));
 		getContentPane().add(cityComboBox);
 		
 		JLabel lblFecha = new JLabel("Fecha");
@@ -59,6 +59,12 @@ public class FrameLeisure extends JFrame{
 		getContentPane().add(btnCancelar);
 	}
 	
+	public String getCityName() {
+		return (String)cityComboBox.getSelectedItem();
+	}
+	public int getDay() {
+		return Integer.parseInt((String)dayComboBox.getSelectedItem());
+	}
 	
 	public JButton getBtnAceptar() {
 		return btnAceptar;

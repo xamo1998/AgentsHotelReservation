@@ -2,13 +2,20 @@ package data;
 
 import jade.util.leap.Serializable;
 
-public class ReservationData implements Serializable{
+public class MessageData implements Serializable{
 	private String cityName, type;
 	private int start, end;
-	public ReservationData(String cityName,String type, int start, int end) {
+	public MessageData(String cityName,String type, int start, int end) {
 		this.cityName = cityName;
+		this.type=type;
 		this.start = start;
 		this.end = end;
+	}
+	public MessageData(String cityName,String type, int start) {
+		this.cityName = cityName;
+		this.type=type;
+		this.start = start;
+		this.end = -1;
 	}
 	
 	

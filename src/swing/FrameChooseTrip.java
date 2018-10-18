@@ -43,7 +43,7 @@ public class FrameChooseTrip extends JFrame{
 		getContentPane().add(btnCancelar);
 		
 		cityComboBox = new JComboBox();
-		cityComboBox.setModel(new DefaultComboBoxModel(Data.getCities()));
+		cityComboBox.setModel(new DefaultComboBoxModel(Data.getDefaultCities()));
 		cityComboBox.setBounds(200, 11, 90, 20);
 		getContentPane().add(cityComboBox);
 		

@@ -6,6 +6,7 @@ import java.util.ArrayList;
 public class Data {
 	private static final int SIZE_DAYS=31;
 	private ArrayList<City> cities;
+	public static final String ACCOMMODATION_TYPE_CORTE_INGLES="reserva_corte_ingles";
 	public static final String ACCOMMODATION_TYPE="reserva";
 	public static final String LEISURE_TYPE="ocio";
 	public static final String ONTOLOGY="ontologia";
@@ -76,10 +77,18 @@ public class Data {
 		}
 		return calendar;
 	}
+	
 
 
+	public void setCities(ArrayList<City> cities) {
+		this.cities = cities;
+	}
+	public ArrayList<City> getCities(){
+		return cities;
+	}
 
-	public static String[] getCities() {
+
+	public static String[] getDefaultCities() {
 		String cities[]= {"Madrid","Plasencia","Vigo"};
 		return cities;
 	}

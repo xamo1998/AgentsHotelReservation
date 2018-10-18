@@ -8,9 +8,11 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.xml.ws.FaultAction;
 
 import data.Data;
-import data.ReservationData;
+import data.Hotel;
+import data.MessageData;
 import helpers.Utils;
 import jade.core.Agent;
 import jade.lang.acl.ACLMessage;
@@ -45,11 +47,18 @@ public class UserAgent extends Agent{
 							return;
 						}
 						//Pasos: 1.enviamos mensaje, 2.Esperamos respues, 3.Imprimimos
-						ReservationData data = new ReservationData(chooseTrip.getCity(),Data.ACCOMMODATION_TYPE,chooseTrip.getStartDay(), chooseTrip.getEndDay());
-						Utils.enviarMensaje(currentAgent, Data.ACCOMMODATION_TYPE, data);
+						MessageData data = new MessageData(chooseTrip.getCity(),Data.ACCOMMODATION_TYPE,chooseTrip.getStartDay(), chooseTrip.getEndDay());
+						Utils.enviarMensaje(currentAgent, Data.ACCOMMODATION_TYPE_CORTE_INGLES, data);
 						ACLMessage msg=currentAgent.blockingReceive(MessageTemplate.and(MessageTemplate.MatchPerformative(ACLMessage.INFORM), MessageTemplate.MatchOntology("ontologia")));
 						try {
-							System.out.println("Mensaje: "+msg.getContentObject());
+							Hotel hotel=(Hotel) msg.getContentObject();
+							if(hotel==null) {
+								System.out.println("No hay fechas disponibles\n");
+							}else {
+								System.out.println("Se ha reservado para el Hotel: "+hotel.getName()+
+										"\nFecha: "+chooseTrip.getStartDay()+"-"+chooseTrip.getEndDay()+
+										"\nCiudad: "+chooseTrip.getCity());
+							}
 						} catch (UnreadableException e2) {
 							// TODO: handle exception
 						}
@@ -78,6 +87,14 @@ public class UserAgent extends Agent{
 					@Override
 					public void actionPerformed(ActionEvent arg0) {
 						// TODO Auto-generated method stub
+						MessageData data= new MessageData(frameLeisure.getCityName(),Data.LEISURE_TYPE, frameLeisure.getDay());
+						Utils.enviarMensaje(currentAgent, Data.LEISURE_TYPE, data);
+						ACLMessage msg=currentAgent.blockingReceive(MessageTemplate.and(MessageTemplate.MatchPerformative(ACLMessage.INFORM), MessageTemplate.MatchOntology("ontologia")));
+						try {
+							System.out.println("Mensaje: "+msg.getContentObject());
+						} catch (UnreadableException e2) {
+							// TODO: handle exception
+						}
 						
 					}
 				});
