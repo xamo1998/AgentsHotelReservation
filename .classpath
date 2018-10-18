@@ -4,6 +4,5 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="lib" path="C:/Users/xamo/Documents/JADE/commons-codec-1.3.jar"/>
 	<classpathentry kind="lib" path="C:/Users/xamo/Documents/JADE/jade.jar"/>
-	<classpathentry kind="lib" path="C:/Users/xamo/Documents/JADE/Memo_Calendar_1.0_eng.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
