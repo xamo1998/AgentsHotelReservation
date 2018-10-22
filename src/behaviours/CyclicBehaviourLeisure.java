@@ -2,7 +2,9 @@ package behaviours;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.ArrayList;
 
+import data.Activitie;
 import data.Data;
 import data.Hotel;
 import data.MessageData;
@@ -14,9 +16,9 @@ import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import jade.lang.acl.UnreadableException;
 
-public class CyclicBehaviourAccommodation extends CyclicBehaviour{
+public class CyclicBehaviourLeisure extends CyclicBehaviour{
 	private Data data;
-	public CyclicBehaviourAccommodation(Agent agent) {
+	public CyclicBehaviourLeisure(Agent agent) {
 		// TODO Auto-generated constructor stub
 		super(agent);
 		data=new Data();
@@ -39,9 +41,9 @@ public class CyclicBehaviourAccommodation extends CyclicBehaviour{
 			//cambio la codificacion de la carta
 			aclMessage.getEnvelope().setPayloadEncoding("ISO8859_1");
 	        //aclMessage.getEnvelope().setAclRepresentation(FIPANames.ACLCodec.XML); 
-			Hotel hotel= checkAccommodation(data);
+			ArrayList<Activitie> activities= checkActivities(data);
 			try {
-				aclMessage.setContentObject((Serializable) hotel);
+				aclMessage.setContentObject((Serializable) activities);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -54,29 +56,25 @@ public class CyclicBehaviourAccommodation extends CyclicBehaviour{
 			e.printStackTrace();
 		}
 	}
-	private Hotel checkAccommodation(MessageData dataMessage) {
+	private ArrayList<Activitie> checkActivities(MessageData dataMessage) {
 		// TODO Auto-generated method stub
+		ArrayList<Activitie> activities = new ArrayList<>();
 		for(int i=0; i<data.getCities().size(); i++) {  //Recorremos ciudades
 			if(data.getCities().get(i).getName().equals(dataMessage.getCityName())) {
-				for(int j=0; j<data.getCities().get(i).getHotels().size(); j++) { //Recorremos Hoteles
-					if(checkAvailability(data.getCities().get(i).getHotels().get(j),dataMessage)) { //Comprobamos hoteles
-						return data.getCities().get(i).getHotels().get(j);
+				for(int j=0; j<data.getCities().get(i).getActivities().size(); j++) { //Recorremos Hoteles
+					if(checkAvailability(data.getCities().get(i).getActivities().get(j),dataMessage)) { //Comprobamos hoteles
+						activities.add(data.getCities().get(i).getActivities().get(j));
 					}
 				}
 			}
 		}
-		
-		return null;
+		return activities;
 	}
-	private boolean checkAvailability(Hotel hotel,MessageData dataMessage) {
-		for(int i= dataMessage.getStart(); i<=dataMessage.getEnd();i++) {
-			if(hotel.getCalendar()[i]==0) return false;
-		}
-		System.err.println("Hay hueco en "+hotel.getName());
-		for(int i= dataMessage.getStart(); i<=dataMessage.getEnd();i++) {
-			hotel.getCalendar()[i]--;
-		}
-		return true;
+	private boolean checkAvailability(Activitie activitie, MessageData dataMessage) {
+		// TODO Auto-generated method stub
+		if(activitie.getCalendar()[dataMessage.getStart()]) 
+			return true;
+		return false;
 	}
 
 }

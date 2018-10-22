@@ -2,9 +2,11 @@ package behaviours;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
 
+import data.Activitie;
 import data.Data;
 import data.Hotel;
 import data.MessageData;
@@ -33,7 +35,7 @@ public class CyclicBehaviourCorteIngles extends CyclicBehaviour{
 		ids.add(msg.getSender());
 		try {
 			MessageData dataRecieved = (MessageData) msg.getContentObject();
-			if(dataRecieved.getType().equals(Data.ACCOMMODATION_TYPE)) {
+			if(dataRecieved.getType().equals(Data.ACCOMMODATION_TYPE_CORTE_INGLES)) {
 				Utils.enviarMensaje(myAgent, Data.ACCOMMODATION_TYPE, dataRecieved);
 				ACLMessage msgRecieved=myAgent.blockingReceive(MessageTemplate.and(MessageTemplate.MatchPerformative(ACLMessage.INFORM), MessageTemplate.MatchOntology("ontologia")));
 				System.out.println("CI: Recibo respuesta");
@@ -57,7 +59,33 @@ public class CyclicBehaviourCorteIngles extends CyclicBehaviour{
 				}
 				System.out.println("CI: Envio respuesta");
 				this.myAgent.send(aclMessage);
-			}	
+			}
+			else {
+				System.out.println("CI: Recibo LEISURE");
+				Utils.enviarMensaje(myAgent, Data.LEISURE_TYPE, dataRecieved);
+				ACLMessage msgRecieved=myAgent.blockingReceive(MessageTemplate.and(MessageTemplate.MatchPerformative(ACLMessage.INFORM), MessageTemplate.MatchOntology("ontologia")));
+				System.out.println("CI: Recibo respuesta");
+				ArrayList<Activitie> activities= (ArrayList<Activitie>) msgRecieved.getContentObject();
+				
+				ACLMessage aclMessage = new ACLMessage(ACLMessage.INFORM);    	
+		   		aclMessage.addReceiver(ids.poll());
+		        aclMessage.setOntology("ontologia");
+		        //el lenguaje que se define para el servicio
+		        aclMessage.setLanguage(new SLCodec().getName());
+		        //el mensaje se transmita en XML
+		        aclMessage.setEnvelope(new Envelope());
+				//cambio la codificacion de la carta
+				aclMessage.getEnvelope().setPayloadEncoding("ISO8859_1");
+		        //aclMessage.getEnvelope().setAclRepresentation(FIPANames.ACLCodec.XML); 
+				try {
+					aclMessage.setContentObject((Serializable)activities);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				System.out.println("CI: Envio respuesta");
+				this.myAgent.send(aclMessage);
+			}
 			
 		} catch (UnreadableException e) {
 			// TODO Auto-generated catch block

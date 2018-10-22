@@ -2,7 +2,9 @@ package data;
 
 import java.util.ArrayList;
 
-public class City {
+import jade.util.leap.Serializable;
+
+public class City implements Serializable{
 	private String name;
 	private ArrayList<Activitie> activities;
 	private ArrayList<Hotel> hotels;

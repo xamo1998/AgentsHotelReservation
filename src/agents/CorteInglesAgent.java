@@ -22,11 +22,12 @@ public class CorteInglesAgent extends Agent{
 		sd.addOntologies(Data.ONTOLOGY);
 		sd.addLanguages(new SLCodec().getName());	
 		dfd.addServices(sd);
-		//sd.setName("Ocio");
-		//sd.setType(Data.LEISURE_TYPE);
-		//sd.addOntologies(Data.ONTOLOGY);
-		//sd.addLanguages(new SLCodec().getName());	
-		//dfd.addServices(sd);
+		sd=new ServiceDescription();
+		sd.setName("Ocio");
+		sd.setType(Data.LEISURE_TYPE_CORTE_INGLES);
+		sd.addOntologies(Data.ONTOLOGY);
+		sd.addLanguages(new SLCodec().getName());	
+		dfd.addServices(sd);
 		try 
 		{
 			DFService.register(this, dfd);

@@ -2,12 +2,15 @@ package data;
 
 import java.util.ArrayList;
 
+import jade.util.leap.Serializable;
 
-public class Data {
+
+public class Data implements Serializable{
 	private static final int SIZE_DAYS=31;
 	private ArrayList<City> cities;
 	public static final String ACCOMMODATION_TYPE_CORTE_INGLES="reserva_corte_ingles";
 	public static final String ACCOMMODATION_TYPE="reserva";
+	public static final String LEISURE_TYPE_CORTE_INGLES="ocio_corte_ingles";
 	public static final String LEISURE_TYPE="ocio";
 	public static final String ONTOLOGY="ontologia";
 	

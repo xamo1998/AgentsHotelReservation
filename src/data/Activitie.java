@@ -1,6 +1,8 @@
 package data;
 
-public class Activitie {
+import jade.util.leap.Serializable;
+
+public class Activitie implements Serializable{
 	private String name;
 	private boolean calendar[];	
 	public Activitie(String name) {

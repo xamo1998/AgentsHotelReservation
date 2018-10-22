@@ -3,6 +3,7 @@ package agents;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
+import java.util.ArrayList;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -10,6 +11,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.xml.ws.FaultAction;
 
+import data.Activitie;
 import data.Data;
 import data.Hotel;
 import data.MessageData;
@@ -47,17 +49,21 @@ public class UserAgent extends Agent{
 							return;
 						}
 						//Pasos: 1.enviamos mensaje, 2.Esperamos respues, 3.Imprimimos
-						MessageData data = new MessageData(chooseTrip.getCity(),Data.ACCOMMODATION_TYPE,chooseTrip.getStartDay(), chooseTrip.getEndDay());
+						MessageData data = new MessageData(chooseTrip.getCity(),Data.ACCOMMODATION_TYPE_CORTE_INGLES,chooseTrip.getStartDay(), chooseTrip.getEndDay());
 						Utils.enviarMensaje(currentAgent, Data.ACCOMMODATION_TYPE_CORTE_INGLES, data);
 						ACLMessage msg=currentAgent.blockingReceive(MessageTemplate.and(MessageTemplate.MatchPerformative(ACLMessage.INFORM), MessageTemplate.MatchOntology("ontologia")));
 						try {
 							Hotel hotel=(Hotel) msg.getContentObject();
 							if(hotel==null) {
-								System.out.println("No hay fechas disponibles\n");
+								//System.out.println("No hay fechas disponibles\n");
+								JOptionPane.showMessageDialog(chooseTrip.getFocusOwner(),"No hay fechas disponibles","ERROR",JOptionPane.ERROR_MESSAGE);
 							}else {
-								System.out.println("Se ha reservado para el Hotel: "+hotel.getName()+
+								//System.out.println("Se ha reservado para el Hotel: "+hotel.getName()+
+								//		"\nFecha: "+chooseTrip.getStartDay()+"-"+chooseTrip.getEndDay()+
+								//		"\nCiudad: "+chooseTrip.getCity());
+								JOptionPane.showMessageDialog(chooseTrip.getFocusOwner(), "Se ha reservado para el Hotel: "+hotel.getName()+
 										"\nFecha: "+chooseTrip.getStartDay()+"-"+chooseTrip.getEndDay()+
-										"\nCiudad: "+chooseTrip.getCity());
+										"\nCiudad: "+chooseTrip.getCity(), "Reserva completada", JOptionPane.INFORMATION_MESSAGE);
 							}
 						} catch (UnreadableException e2) {
 							// TODO: handle exception
@@ -87,11 +93,17 @@ public class UserAgent extends Agent{
 					@Override
 					public void actionPerformed(ActionEvent arg0) {
 						// TODO Auto-generated method stub
-						MessageData data= new MessageData(frameLeisure.getCityName(),Data.LEISURE_TYPE, frameLeisure.getDay());
-						Utils.enviarMensaje(currentAgent, Data.LEISURE_TYPE, data);
+						MessageData data= new MessageData(frameLeisure.getCityName(),Data.LEISURE_TYPE_CORTE_INGLES, frameLeisure.getDay());
+						Utils.enviarMensaje(currentAgent, Data.LEISURE_TYPE_CORTE_INGLES, data);
 						ACLMessage msg=currentAgent.blockingReceive(MessageTemplate.and(MessageTemplate.MatchPerformative(ACLMessage.INFORM), MessageTemplate.MatchOntology("ontologia")));
 						try {
-							System.out.println("Mensaje: "+msg.getContentObject());
+							ArrayList<Activitie> activities = (ArrayList<Activitie>) msg.getContentObject();
+							if(activities.size()==0)
+								System.out.println("No hay ninguna actividad");
+							else {
+								for(int i=0; i<activities.size();i++)
+									System.out.println(activities.get(i).getName());
+							}
 						} catch (UnreadableException e2) {
 							// TODO: handle exception
 						}
