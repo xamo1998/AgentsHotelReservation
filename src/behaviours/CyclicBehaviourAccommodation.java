@@ -7,6 +7,7 @@ import data.Data;
 import data.Hotel;
 import data.MessageData;
 import jade.content.lang.sl.SLCodec;
+import jade.core.AID;
 import jade.core.Agent;
 import jade.core.behaviours.CyclicBehaviour;
 import jade.domain.FIPAAgentManagement.Envelope;
@@ -42,6 +43,7 @@ public class CyclicBehaviourAccommodation extends CyclicBehaviour{
 			Hotel hotel= checkAccommodation(data);
 			try {
 				aclMessage.setContentObject((Serializable) hotel);
+				aclMessage.setConversationId(Data.ACCOMMODATION_TYPE);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

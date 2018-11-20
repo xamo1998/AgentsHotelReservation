@@ -21,75 +21,89 @@ import jade.lang.acl.MessageTemplate;
 import jade.lang.acl.UnreadableException;
 
 public class CyclicBehaviourCorteIngles extends CyclicBehaviour{
-	private Queue<AID> ids;
+	private Queue<AID> idsAccommodation, idsLeisure;
 	public CyclicBehaviourCorteIngles(Agent agent) {
 		// TODO Auto-generated constructor stub
 		super(agent);
-		ids=new LinkedList<>();
+		idsAccommodation=new LinkedList<>();
+		idsLeisure=new LinkedList<>();
 	}
 	@Override
 	public void action() {
 		// TODO Auto-generated method stub
-		ACLMessage msg=this.myAgent.blockingReceive(MessageTemplate.and(MessageTemplate.MatchPerformative(ACLMessage.REQUEST), MessageTemplate.MatchOntology("ontologia")));
+		ACLMessage msg=this.myAgent.blockingReceive();
 		System.out.println("CI: Me ha llegado peticion");
-		ids.add(msg.getSender());
-		try {
-			MessageData dataRecieved = (MessageData) msg.getContentObject();
-			if(dataRecieved.getType().equals(Data.ACCOMMODATION_TYPE_CORTE_INGLES)) {
-				Utils.enviarMensaje(myAgent, Data.ACCOMMODATION_TYPE, dataRecieved);
-				ACLMessage msgRecieved=myAgent.blockingReceive(MessageTemplate.and(MessageTemplate.MatchPerformative(ACLMessage.INFORM), MessageTemplate.MatchOntology("ontologia")));
-				System.out.println("CI: Recibo respuesta");
-				Hotel hotelRecieved= (Hotel) msgRecieved.getContentObject();
-				
-				ACLMessage aclMessage = new ACLMessage(ACLMessage.INFORM);    	
-		   		aclMessage.addReceiver(ids.poll());
-		        aclMessage.setOntology("ontologia");
-		        //el lenguaje que se define para el servicio
-		        aclMessage.setLanguage(new SLCodec().getName());
-		        //el mensaje se transmita en XML
-		        aclMessage.setEnvelope(new Envelope());
-				//cambio la codificacion de la carta
-				aclMessage.getEnvelope().setPayloadEncoding("ISO8859_1");
-		        //aclMessage.getEnvelope().setAclRepresentation(FIPANames.ACLCodec.XML); 
-				try {
-					aclMessage.setContentObject((Serializable)hotelRecieved);
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				System.out.println("CI: Envio respuesta");
-				this.myAgent.send(aclMessage);
-			}
-			else {
-				System.out.println("CI: Recibo LEISURE");
-				Utils.enviarMensaje(myAgent, Data.LEISURE_TYPE, dataRecieved);
-				ACLMessage msgRecieved=myAgent.blockingReceive(MessageTemplate.and(MessageTemplate.MatchPerformative(ACLMessage.INFORM), MessageTemplate.MatchOntology("ontologia")));
-				System.out.println("CI: Recibo respuesta");
-				ArrayList<Activitie> activities= (ArrayList<Activitie>) msgRecieved.getContentObject();
-				
-				ACLMessage aclMessage = new ACLMessage(ACLMessage.INFORM);    	
-		   		aclMessage.addReceiver(ids.poll());
-		        aclMessage.setOntology("ontologia");
-		        //el lenguaje que se define para el servicio
-		        aclMessage.setLanguage(new SLCodec().getName());
-		        //el mensaje se transmita en XML
-		        aclMessage.setEnvelope(new Envelope());
-				//cambio la codificacion de la carta
-				aclMessage.getEnvelope().setPayloadEncoding("ISO8859_1");
-		        //aclMessage.getEnvelope().setAclRepresentation(FIPANames.ACLCodec.XML); 
-				try {
-					aclMessage.setContentObject((Serializable)activities);
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				System.out.println("CI: Envio respuesta");
-				this.myAgent.send(aclMessage);
+		if(msg.getConversationId()!=null && msg.getConversationId().equals(Data.ACCOMMODATION_TYPE)) {
+			System.out.println("CI: Recibo respuesta");
+			Hotel hotelRecieved=null;
+			try {
+				hotelRecieved = (Hotel) msg.getContentObject();
+			} catch (UnreadableException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
 			}
 			
-		} catch (UnreadableException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			ACLMessage aclMessage = new ACLMessage(ACLMessage.INFORM);    	
+	   		aclMessage.addReceiver(idsAccommodation.poll());
+	        aclMessage.setOntology("ontologia");
+	        //el lenguaje que se define para el servicio
+	        aclMessage.setLanguage(new SLCodec().getName());
+	        //el mensaje se transmita en XML
+	        aclMessage.setEnvelope(new Envelope());
+			//cambio la codificacion de la carta
+			aclMessage.getEnvelope().setPayloadEncoding("ISO8859_1");
+	        //aclMessage.getEnvelope().setAclRepresentation(FIPANames.ACLCodec.XML); 
+			try {
+				aclMessage.setContentObject((Serializable)hotelRecieved);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			System.out.println("CI: Envio respuesta");
+			this.myAgent.send(aclMessage);
+		}else if (msg.getConversationId()!=null && msg.getConversationId().equals(Data.LEISURE_TYPE)) {
+			ArrayList<Activitie> activities=new ArrayList<>();
+			try {
+				activities = (ArrayList<Activitie>) msg.getContentObject();
+			} catch (UnreadableException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			ACLMessage aclMessage = new ACLMessage(ACLMessage.INFORM);    	
+	   		aclMessage.addReceiver(idsLeisure.poll());
+	        aclMessage.setOntology("ontologia");
+	        //el lenguaje que se define para el servicio
+	        aclMessage.setLanguage(new SLCodec().getName());
+	        //el mensaje se transmita en XML
+	        aclMessage.setEnvelope(new Envelope());
+			//cambio la codificacion de la carta
+			aclMessage.getEnvelope().setPayloadEncoding("ISO8859_1");
+	        //aclMessage.getEnvelope().setAclRepresentation(FIPANames.ACLCodec.XML); 
+			try {
+				aclMessage.setContentObject((Serializable)activities);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			System.out.println("CI: Envio respuesta");
+			this.myAgent.send(aclMessage);
+		}
+		else {
+			try {
+				MessageData dataRecieved = (MessageData) msg.getContentObject();
+				if(dataRecieved.getType().equals(Data.ACCOMMODATION_TYPE_CORTE_INGLES)) {
+					idsAccommodation.add(msg.getSender());
+					Utils.enviarMensaje(myAgent, Data.ACCOMMODATION_TYPE, dataRecieved);
+					
+				}
+				else if(dataRecieved.getType().equals(Data.LEISURE_TYPE_CORTE_INGLES)){
+					idsLeisure.add(msg.getSender());
+					Utils.enviarMensaje(myAgent, Data.LEISURE_TYPE, dataRecieved);	
+				}
+			} catch (UnreadableException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		
 	}

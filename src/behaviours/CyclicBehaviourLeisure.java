@@ -44,6 +44,7 @@ public class CyclicBehaviourLeisure extends CyclicBehaviour{
 			ArrayList<Activitie> activities= checkActivities(data);
 			try {
 				aclMessage.setContentObject((Serializable) activities);
+				aclMessage.setConversationId(Data.LEISURE_TYPE);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

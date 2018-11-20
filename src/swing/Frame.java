@@ -8,8 +8,8 @@ public class Frame extends JFrame{
 		setVisible(true);
 		setResizable(false);
 		setTitle("Hotel Reservation");
-		setBounds(200,200,420,250);
-		add(panel=new Panel());
+		setBounds(200,200,391,321);
+		getContentPane().add(panel=new Panel());
 	}
 	
 	public Panel getPanel() {
