@@ -73,14 +73,9 @@ public class UserAgent extends Agent{
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				StringBuilder bookings= new StringBuilder();
-				StringBuilder top= new StringBuilder();
-				top.append("+");
-				for(int i=0; i<48; i++)
-					top.append("=");
-				top.append("+\n");
-				//bookings.append(top);
-				//bookings.append(String.format("%40s\n", "Mis reservas"));
+				bookings.append("==============================================================================\n");
 				bookings.append(String.format("%30s%30s%30s%30s%30s\n", "Ciudad","Hotel","Comiezo","Fin",""));
+				bookings.append("==============================================================================\n");
 		        for(int i=0; i<bookingsList.size();i++) {
 		        	bookings.append((String.format("%30s%30s%30s%30s%30s\n",
 		        			bookingsList.get(i).getCityName(),
@@ -102,6 +97,7 @@ public class UserAgent extends Agent{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
+				frame.getPanel().getTripButton().setEnabled(false);
 				FrameChooseTrip chooseTrip = new FrameChooseTrip();
 				chooseTrip.getBtnAceptar().addActionListener(new ActionListener() {
 					
@@ -136,6 +132,7 @@ public class UserAgent extends Agent{
 						} catch (UnreadableException e2) {
 							// TODO: handle exception
 						}
+						frame.getPanel().getTripButton().setEnabled(true);
 					}
 				});
 				
@@ -144,6 +141,7 @@ public class UserAgent extends Agent{
 					@Override
 					public void actionPerformed(ActionEvent e) {
 						// TODO Auto-generated method stub
+						frame.getPanel().getTripButton().setEnabled(true);
 						chooseTrip.dispatchEvent(new WindowEvent(chooseTrip, WindowEvent.WINDOW_CLOSING));
 					}
 				});
@@ -155,6 +153,7 @@ public class UserAgent extends Agent{
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				// TODO Auto-generated method stub
+				frame.getPanel().getButtonPleasure().setEnabled(false);
 				FrameLeisure frameLeisure = new FrameLeisure();
 				frameLeisure.getBtnAceptar().addActionListener(new ActionListener() {
 					
@@ -177,13 +176,13 @@ public class UserAgent extends Agent{
 								}
 								message=message.concat("\n");
 								System.out.println(message);
-								JOptionPane.showMessageDialog(frameLeisure.getFocusOwner(), message, "Reserva completada", JOptionPane.INFORMATION_MESSAGE);
+								JOptionPane.showMessageDialog(frameLeisure.getFocusOwner(), message, "Listado actividades", JOptionPane.INFORMATION_MESSAGE);
 								frameLeisure.dispatchEvent(new WindowEvent(frameLeisure, WindowEvent.WINDOW_CLOSING));
 							}
 						} catch (UnreadableException e2) {
 							// TODO: handle exception
 						}
-						
+						frame.getPanel().getButtonPleasure().setEnabled(true);
 					}
 				});
 				frameLeisure.getBtnCancelar().addActionListener(new ActionListener() {
@@ -191,6 +190,7 @@ public class UserAgent extends Agent{
 					@Override
 					public void actionPerformed(ActionEvent e) {
 						// TODO Auto-generated method stub
+						frame.getPanel().getButtonPleasure().setEnabled(true);
 						frameLeisure.dispatchEvent(new WindowEvent(frameLeisure, WindowEvent.WINDOW_CLOSING));
 					}
 				});
