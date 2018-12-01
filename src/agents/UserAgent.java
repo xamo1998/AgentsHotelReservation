@@ -56,14 +56,14 @@ public class UserAgent extends Agent{
 				// TODO Auto-generated method stub
 				StringBuilder cadenaTabla = new StringBuilder();
 
-				cadenaTabla.append("+----------------------------------------------------------------+\n");
-				cadenaTabla.append("|                        DESARROLLADORES                         |\n");
-				cadenaTabla.append("+----------------+------------------+-------------+--------------+\n");
-				cadenaTabla.append("|     NOMBRE     |     APELLIDOS    |     DNI     |    GRUPO     |\n");
-				cadenaTabla.append("+----------------+------------------+-------------+--------------+\n");
-				cadenaTabla.append("|     IGNACIO    |  ARROYO CRESPO   |  70920385T  |      A1      |\n");
-				cadenaTabla.append("|     HÉCTOR     | CHAMORRO ÁLVAREZ |  00000000X  |      A1      |\n");
-				cadenaTabla.append("+----------------+------------------+-------------+--------------+\n");
+				cadenaTabla.append("+----------------------------------------------------------------------------+\n");
+				cadenaTabla.append(String.format("%50s\n", "DESARROLLADORES"));
+				cadenaTabla.append("+----------------------------------------------------------------------------+\n");
+				cadenaTabla.append(String.format("%5s%20s%27s%15s\n", "NOMBRE", "APELLIDOS", "DNI", "GRUPO"));
+				cadenaTabla.append("+----------------------------------------------------------------------------+\n");
+				cadenaTabla.append(String.format("%6s%20s%20s%10s\n", "NACHO", "ARROYO CRESPO", "70920385T", "A1"));
+				cadenaTabla.append(String.format("%5s%20s%14s%10s\n", "HÉCTOR", "CHAMORRO ÁLVAREZ", "70908107G", "A1"));
+				cadenaTabla.append("+----------------------------------------------------------------------------+\n");
 				JOptionPane.showMessageDialog(frame.getFocusOwner(), cadenaTabla, "Participantes", JOptionPane.INFORMATION_MESSAGE);
 			}
 		});
